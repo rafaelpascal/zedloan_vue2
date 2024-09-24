@@ -1,9 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router"; // Adjust the import path if necessary
-
-// Create and mount the Vue instance
+import router from "./router";
+import "./assets/styles/global.css";
 new Vue({
-  router, // Include the router
-  render: (h) => h(App), // Render the App component
+  router,
+  render: (h) => h(App),
 }).$mount("#app");

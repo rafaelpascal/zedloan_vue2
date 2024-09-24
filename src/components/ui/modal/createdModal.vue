@@ -1,61 +1,98 @@
 <template>
-    <transition name="modal" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-        <div v-if="show" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div class="bg-white overflow-y-auto mx-4 rounded-lg shadow-lg px-4 lg:px-6 w-full lg:w-[714px] py-10">
-                <div class="flex justify-end items-end mb-2">
-                    <button class="text-gray-500 z-50" @click="closeModal">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <slot></slot>
+    <div v-if="show" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" @click="closeModal">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
             </div>
+            <slot></slot>
         </div>
-    </transition>
+    </div>
 </template>
 
-<script setup>
-import { defineProps, defineEmits } from 'vue';
-
-const props = defineProps({
-    show: {
-        type: Boolean,
-        default: false,
+<script>
+export default {
+    props: {
+        show: {
+            type: Boolean,
+            default: false,
+        },
     },
-});
-
-const emit = defineEmits(['update:show']);
-
-function closeModal() {
-    emit('update:show', false);
-}
-
-function beforeEnter(el) {
-    el.style.opacity = 0;
-}
-
-function enter(el) {
-    el.offsetHeight;
-    el.style.transition = 'opacity 0.5s ease';
-    el.style.opacity = 1;
-}
-
-function leave(el) {
-    el.style.transition = 'opacity 0.5s ease';
-    el.style.opacity = 0;
-}
+    methods: {
+        closeModal() {
+            this.$emit('update:show', false);
+        },
+        beforeEnter(el) {
+            el.style.opacity = 0;
+        },
+        enter(el) {
+            el.offsetHeight; // Trigger reflow
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = 1;
+        },
+        leave(el) {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = 0;
+        },
+    },
+};
 </script>
 
 <style scoped>
-.modal-enter-active,
-.modal-leave-active {
-    transition: opacity 0.5s ease;
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
 }
 
-.modal-enter,
-.modal-leave-to {
-    opacity: 0;
+.modal-content {
+    background-color: white;
+    overflow-y: auto;
+    margin: 0 1rem;
+    /* mx-4 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* shadow-lg */
+    padding: 2.5rem 1rem;
+    /* py-10 px-4 */
+    width: 100%;
+    max-width: 714px;
+    /* lg:w-[714px] */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
+    /* mb-2 */
+}
+
+.modal-close {
+    color: #6b7280;
+    /* text-gray-500 */
+    z-index: 50;
+    background: none;
+    /* Avoid button styles */
+    border: none;
+    /* Avoid button styles */
+    cursor: pointer;
+    /* Add pointer cursor */
+}
+
+.icon {
+    width: 1.5rem;
+    /* w-6 */
+    height: 1.5rem;
+    /* h-6 */
 }
 </style>

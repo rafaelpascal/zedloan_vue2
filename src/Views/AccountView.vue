@@ -1,14 +1,7 @@
 <template>
     <div class="container">
         <div class="sidebar">
-            <router-link to="/" class="nav-link" active-class="active-link"
-                exact-active-class="exact-active-link">Home</router-link>
-            <router-link to="/profile" class="nav-link" active-class="active-link"
-                exact-active-class="exact-active-link">Profile</router-link>
-            <router-link to="/offers" class="nav-link" active-class="active-link"
-                exact-active-class="exact-active-link">Loan Offers</router-link>
-            <router-link to="/accounts" class="nav-link" active-class="active-link"
-                exact-active-class="exact-active-link">Accounts</router-link>
+            <SideBar />
         </div>
         <div class="main-content">
             <button class="toggle-sidebar" v-if="isMobile" @click="toggleSidebar">
@@ -63,99 +56,18 @@
             </div>
         </div>
         <div class="overlay" v-if="isSidebarOpen" @click="toggleSidebar"></div>
-
-        <!-- Modal -->
-        <ModalView class="" :show="isPaynow" @update:show="isPaynow = $event">
-            <div class="modal-header">
-                <button class="modal-close" @click="closeModal">
-                    <svg class="modal-close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-content">
-                <div class="payment-options">
-                    <div class="options-list">
-                        <div v-for="option in options" :key="option.value" class="option">
-                            <input type="radio" :id="option.value" name="options" :value="option.value"
-                                v-model="selectedOption" class="custom-radio" />
-                            <label :for="option.value">{{ option.label }}</label>
-                        </div>
-                    </div>
-                    <div class="pay-now-button">
-                        <button>PAY NOW</button>
-                    </div>
-                </div>
-                <div class="transfer-info">
-                    <h2 class="custom-heading">TRANSFER</h2>
-                    <p
-                        style="text-align: center; font-size: 20px; color: #000; font-weight: 700; text-transform: uppercase;">
-                        TO THE FOLLOWING
-                        ACCOUNT</p>
-                    <div class="amount-info">
-                        <p
-                            style="text-align: center; font-size: 12px; color: #000; font-weight: 400; text-transform: uppercase;">
-                            TO THE AMOUNT YOU WILL SEND</p>
-                        <div class="amount-box">
-                            <h2
-                                style="text-align: center; font-size: 20px; color: #2879FD; font-weight: 700; text-transform: uppercase;">
-                                N26,500</h2>
-                            <img src="../assets/CopyIcon.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="bank-info">
-                        <ul>
-                            <li v-for="bank in banks" :key="bank.id">
-                                <div>
-                                    <p
-                                        style="text-align: left; padding: 0%; font-size: 16px; color: #2879FD; font-weight: 400; text-transform: uppercase;">
-                                        {{ bank.description }}</p>
-                                    <p
-                                        style="text-align: left; padding: 0%; font-size: 35px; color: #000; font-weight: 500; text-transform: uppercase;">
-                                        {{ bank.accountNo || bank.accountName || bank.bank }}</p>
-                                </div>
-                                <button v-if="bank.copy === true"
-                                    @click="copyToClipboard(bank.accountNo || bank.accountName || bank.bank)"
-                                    class="copy-button">
-                                    <img src="../assets/CopyIcon.svg" alt="">
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="reference-info">
-                        <h2 style="text-align: left; font-size: 15px; color: #7F7F7F; font-weight: 400;">Narration/Ref:
-                            <span style="color: #0961E3;">{{ reference }}</span>
-                        </h2>
-                        <button @click="copyref(reference)" class="copy-button">
-                            <img src="../assets/CopyIcon.svg" alt="">
-                        </button>
-                    </div>
-                    <div class="confirm-transfer">
-                        <button>I HAVE DONE THE TRANSFER</button>
-                    </div>
-                    <div class="payment-status">
-                        <p>Checking for the payment <span>N26,500</span></p>
-                        <p>You will be notified when your payment is successful.</p>
-                    </div>
-                    <div class="return-to-dashboard">
-                        <button>RETURN TO DASHBOARD</button>
-                    </div>
-                </div>
-            </div>
-        </ModalView>
     </div>
 </template>
 
 
 <script>
+import SideBar from '../components/ui/sidebar/SideBar.vue';
 import ProgressBar from '../components/ui/progressbar/ProgressBar.vue';
-import ModalView from '../components/ui/modal/ModalView.vue';
 
 export default {
     components: {
+        SideBar,
         ProgressBar,
-        ModalView,
     },
     data() {
         return {
@@ -247,37 +159,12 @@ export default {
 }
 
 .sidebar {
+    position: absolute;
+    height: 100%;
+    z-index: 20;
+    background-color: black;
+    transition: all 0.3s;
     width: 20%;
-    display: flex;
-    background: #000;
-    /* height: 100%; */
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    padding-left: 10px;
-}
-
-.nav-link {
-    width: 100%;
-    color: white;
-    font-family: Montserrat, sans-serif;
-    text-transform: uppercase;
-    font-size: 22px;
-    text-align: left;
-    padding: 24px;
-    font-weight: 600;
-    display: block;
-    text-decoration: none;
-}
-
-.nav-link.active-link {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #2879FD;
-    width: 100%;
-}
-
-.nav-link.exact-active-link {
-    font-weight: bold;
 }
 
 .modal-header {
@@ -310,11 +197,11 @@ export default {
 
 /* Main content styles */
 .main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* flex: 1; */
     height: 100%;
-    width: 50%;
+    /* padding-top: 4%; */
+    width: 60%;
+    margin-left: 414px;
     z-index: 0;
 }
 
@@ -343,6 +230,7 @@ export default {
     width: 24px;
     height: 24px;
     stroke: #000;
+    /* Adjust color as needed */
 }
 
 .menu-icon {
@@ -352,7 +240,6 @@ export default {
 .content {
     padding-left: 1rem;
     padding-right: 1rem;
-    width: 100%;
 }
 
 /* Info Cards */

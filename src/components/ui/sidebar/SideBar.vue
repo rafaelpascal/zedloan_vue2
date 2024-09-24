@@ -19,10 +19,9 @@ export default {
 
 <style>
 .sidebar {
-    background-color: red;
     width: 100%;
     display: flex;
-    height: 100%;
+    /* height: 100%; */
     flex-direction: column;
     justify-content: center;
     align-items: start;
@@ -46,6 +45,7 @@ export default {
 .nav-link.active-link {
     background-color: rgba(255, 255, 255, 0.2);
     color: #2879FD;
+    width: 100%;
 }
 
 .nav-link.exact-active-link {

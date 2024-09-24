@@ -14,10 +14,7 @@ export default {
 
 <style scoped>
 .app-layout {
-    /* display: flex; */
     width: 100%;
-    /* overflow-y: auto; */
-    /* background: #000; */
     padding: 0%;
     margin: 0%;
 }
