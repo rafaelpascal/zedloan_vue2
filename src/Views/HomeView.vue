@@ -225,7 +225,7 @@ export default {
             });
         },
         checkMobileView() {
-            this.isMobile = window.innerWidth <= 768; // Adjust the breakpoint as needed
+            this.isMobile = window.innerWidth <= 768;
         },
     },
     mounted() {

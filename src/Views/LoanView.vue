@@ -10,10 +10,11 @@
             <router-link to="/accounts" class="nav-link" active-class="active-link"
                 exact-active-class="exact-active-link">Accounts</router-link>
         </div>
-        <div class="flex-1 h-[100%] pt-[2%] w-full lg:w-[80%] px-2 lg:ml-[314px] z-0">
-            <button class="lg:hidden sticky bg-white w-full top-0 left-0 p-4 text-black z-20" @click="toggleSidebar">
+
+        <div class="main-content">
+            <!-- <button class="lg:hidden sticky bg-white w-full top-0 left-0 p-4 text-black z-20" @click="toggleSidebar">
                 <menu-icon class="text-blue-500" />
-            </button>
+            </button> -->
             <div v-if="formActive === true" class="form-container">
                 <div class="form-content">
                     <div class="form-inner">
@@ -484,10 +485,22 @@ export default {
 
 <style scoped>
 .loanContainer {
-    position: relative;
+    display: flex;
     width: 100%;
     height: 100vh;
+    position: relative;
+    padding: 0%;
 }
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    z-index: 0;
+}
+
 
 .sidebar-class {
     position: absolute;
@@ -518,12 +531,14 @@ export default {
 }
 
 .sidebar {
-    position: absolute;
-    height: 100%;
-    z-index: 20;
-    background-color: black;
-    transition: all 0.3s;
     width: 20%;
+    display: flex;
+    background: #000;
+    /* height: 100%; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-left: 10px;
 }
 
 

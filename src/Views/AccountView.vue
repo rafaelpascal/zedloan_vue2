@@ -1,73 +1,134 @@
 <template>
     <div class="container">
         <div class="sidebar">
-            <SideBar />
+            <router-link to="/" class="nav-link" active-class="active-link"
+                exact-active-class="exact-active-link">Home</router-link>
+            <router-link to="/profile" class="nav-link" active-class="active-link"
+                exact-active-class="exact-active-link">Profile</router-link>
+            <router-link to="/offers" class="nav-link" active-class="active-link"
+                exact-active-class="exact-active-link">Loan Offers</router-link>
+            <router-link to="/accounts" class="nav-link" active-class="active-link"
+                exact-active-class="exact-active-link">Accounts</router-link>
         </div>
-        <div class="main-content">
-            <button class="toggle-sidebar" v-if="isMobile" @click="toggleSidebar">
-                <menu-icon class="menu-icon" />
-            </button>
-            <div class="content">
-                <div class="due-info">
-                    <h2>Next Due: <span>21/08/2024</span><span class="due-days">16 days</span></h2>
-                    <div class="info-cards">
-                        <div class="card remaining-loan">
-                            <div class="card-content">
-                                <h2>REMAINING LOAN</h2>
-                                <h1>120,000</h1>
+        <div class="main-container">
+            <!-- <button class="menu-button" @click="toggleSidebar">
+                <menu-icon class="icon-menu" />
+            </button> -->
+
+            <div class="content-container">
+                <!-- <button class="back-button" @click="handleCloseNewAccount">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                        class="icon-arrow">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <p class="back-text">Back</p>
+                </button> -->
+                <h2>PROFILE</h2>
+                <form @submit.prevent="handleSubmit" class="form-container">
+                    <div class="form-content">
+                        <div class="input-container">
+                            <p class="input-label">Loan title</p>
+                            <input type="text" v-model="loanTitle" placeholder="Loan Title" class="input-field">
+                        </div>
+                        <div class="textarea-container">
+                            <p class="input-label">Loan description</p>
+                            <textarea v-model="loanDescription" placeholder="Loan description"
+                                class="textarea-field"></textarea>
+                        </div>
+                        <div class="input-container">
+                            <p class="input-label">Loan amount</p>
+                            <input type="text" v-model="loanAmount" placeholder="Loan amount" class="input-field">
+                        </div>
+                        <div class="input-container">
+                            <p class="input-label">Loan duration</p>
+                            <div class="loan-duration">
+                                <div class="duration-select">
+                                    <select v-model="loanDuration" name="duration" id="duration" class="select-field">
+                                        <option value="" disabled selected>3</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                    <select v-model="loanDurationUnit" name="months" id="months" class="select-field">
+                                        <option value="" disabled selected>Months</option>
+                                        <option value="6-months">6</option>
+                                        <option value="12-months">12</option>
+                                        <option value="24-months">24</option>
+                                    </select>
+                                </div>
+                                <div class="monthly-amount">
+                                    <h1>N6,000/month</h1>
+                                </div>
                             </div>
-                            <h3>N130,000</h3>
                         </div>
-                        <div class="card repaid-amount">
-                            <div class="card-content">
-                                <h2>REPAID AMOUNT</h2>
-                                <h1>10,000</h1>
+                        <div class="input-container">
+                            <p class="input-label">Loan interest rate</p>
+                            <div class="loan-interest">
+                                <div class="interest-select">
+                                    <select v-model="loanInterestRate" name="interest" id="interest"
+                                        class="select-field">
+                                        <option value="" disabled selected>4%</option>
+                                        <option value="1">5%</option>
+                                        <option value="2">6%</option>
+                                        <option value="3">7%</option>
+                                    </select>
+                                </div>
+                                <div class="total-amount">
+                                    <h1>Total: N126,000</h1>
+                                </div>
                             </div>
-                            <h3>1/4</h3>
+                        </div>
+                        <div class="input-container">
+                            <p class="input-label">Moratorium</p>
+                            <div class="moratorium-select">
+                                <select v-model="moratorium" name="moratorium" id="moratorium" class="select-field">
+                                    <option value="" disabled selected>3 Days</option>
+                                    <option value="1">4 Days</option>
+                                    <option value="2">5 Days</option>
+                                    <option value="3">6 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-container">
+                            <p class="input-label">Borrower’s Details</p>
+                            <input type="text" v-model="borrowerDetails" placeholder="Borrower’s Details"
+                                class="input-field">
+                        </div>
+                        <div class="input-container">
+                            <input type="text" v-model="additionalDetails1" placeholder="Additional Details"
+                                class="input-field">
+                        </div>
+                        <div class="input-container">
+                            <input type="text" v-model="additionalDetails2" placeholder="Additional Details"
+                                class="input-field">
+                        </div>
+                        <div class="input-container">
+                            <input type="text" v-model="additionalDetails3" placeholder="Additional Details"
+                                class="input-field">
+                        </div>
+                        <div class="button-container">
+                            <button v-if="formsubmitted === true" type="submit" class="submit-button">ACCEPT LOAN
+                                OFFER</button>
                         </div>
                     </div>
-                </div>
-                <div class="instant-repayment">
-                    <h2>INSTANT REPAYMENT</h2>
-                    <div class="repayment-actions">
-                        <div class="repayment-amount">
-                            <h3>10,000+</h3>
-                        </div>
-                        <button class="repay-now" @click="toggleisPaynow">Repay Now</button>
-                    </div>
-                </div>
-                <div class="progress-section">
-                    <ProgressBar :value="50" :max="100" />
-                </div>
-                <h2 class="remaining-amount">Remaining: 120,000</h2>
-                <div class="repayments">
-                    <h2 style="font-weight: 400; font-size: 16px; margin-bottom: 10px;">REPAYMENTS</h2>
-                    <div style="padding: 0%; margin: 0%;">
-                        <ul style="padding: 0%; margin: 0%;">
-                            <li v-for="item in items" :key="item.id"
-                                style="display: flex; border-bottom: 2px solid #0961E3; padding: 10px 0; width: 100%; justify-content: space-between; align-items: center;">
-                                <span>{{ item.amount }}</span>
-                                <span>{{ item.date }}</span>
-                                <span>{{ item.bank }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
+
         <div class="overlay" v-if="isSidebarOpen" @click="toggleSidebar"></div>
     </div>
 </template>
 
 
 <script>
-import SideBar from '../components/ui/sidebar/SideBar.vue';
-import ProgressBar from '../components/ui/progressbar/ProgressBar.vue';
+// import SideBar from '../components/ui/sidebar/SideBar.vue';
+// import ProgressBar from '../components/ui/progressbar/ProgressBar.vue';
 
 export default {
     components: {
-        SideBar,
-        ProgressBar,
+        // SideBar,
+        // ProgressBar,
     },
     data() {
         return {
@@ -158,14 +219,41 @@ export default {
     padding: 0%;
 }
 
+
 .sidebar {
-    position: absolute;
-    height: 100%;
-    z-index: 20;
-    background-color: black;
-    transition: all 0.3s;
     width: 20%;
+    display: flex;
+    background: #000;
+    /* height: 100%; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-left: 10px;
 }
+
+.nav-link {
+    width: 100%;
+    color: white;
+    font-family: Montserrat, sans-serif;
+    text-transform: uppercase;
+    font-size: 22px;
+    text-align: left;
+    padding: 24px;
+    font-weight: 600;
+    display: block;
+    text-decoration: none;
+}
+
+.nav-link.active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #2879FD;
+    width: 100%;
+}
+
+.nav-link.exact-active-link {
+    font-weight: bold;
+}
+
 
 .modal-header {
     display: flex;
@@ -195,457 +283,179 @@ export default {
     width: 0;
 }
 
-/* Main content styles */
-.main-content {
-    /* flex: 1; */
+.main-container {
+    flex: 1;
     height: 100%;
-    /* padding-top: 4%; */
-    width: 60%;
-    margin-left: 414px;
+    padding-top: 2%;
+    width: 100%;
+    max-width: 80%;
+    /* padding-left: 2%; */
+    /* margin-left: 314px; */
+    position: relative;
     z-index: 0;
 }
 
-.toggle-sidebar {
-    position: sticky;
+.menu-button {
+    display: block;
     background-color: white;
     width: 100%;
+    position: sticky;
     top: 0;
-    left: 0;
-    padding: 1rem;
+    padding: 16px;
     color: black;
     z-index: 20;
 }
 
-.copy-button {
-    background: none;
-    border: none;
-    cursor: pointer;
+.icon-menu {
+    color: #2879FD;
 }
 
-.copy-icon {
-    display: inline-block;
-}
-
-.icon {
-    width: 24px;
-    height: 24px;
-    stroke: #000;
-    /* Adjust color as needed */
-}
-
-.menu-icon {
-    color: blue;
-}
-
-.content {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-/* Info Cards */
-.info-cards {
+.content-container {
     display: flex;
-    gap: 2rem;
-    padding-top: 1rem;
-    align-items: center;
-    flex-direction: row;
-}
-
-.card {
-    width: 100%;
-    height: 197px;
-    background-color: #0961E3;
-    border-radius: 0.5rem;
-}
-
-.card-content {
-    padding: 2.5rem;
-}
-
-.card h2 {
-    color: #F9FAFC;
-    font-size: 1.25rem;
-}
-
-.card h1 {
-    color: #F9FAFC;
-    font-size: 1.875rem;
-    font-weight: bold;
-}
-
-.card h3 {
-    color: #F9FAFC;
-    text-align: right;
-    padding: 1rem;
-    font-size: 1.125rem;
-}
-
-/* Instant Repayment */
-.instant-repayment {
-    padding-top: 1.5rem;
-}
-
-.repayment-actions {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
-}
-
-.repayment-amount {
-    width: 181px;
-    height: 76px;
-    border: 1.5px solid #2879FD;
-    border-radius: 4px;
-    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
 }
 
-.repay-now {
-    width: 161px;
-    background-color: #0961E3;
-    border-radius: 4px;
-    height: 60px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-}
-
-/* Progress Bar Section */
-.progress-section {
-    margin-top: 1.5rem;
-}
-
-/* Remaining Amount */
-.remaining-amount {
-    margin-top: 0.5rem;
-}
-
-/* Repayments */
-.repayments {
-    background-color: #ECF5FF;
-    padding: 20px;
-    margin-top: 1rem;
-    border-radius: 12px;
-    width: 551px;
-
-}
-
-/* Overlay */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-}
-
-/* Modal */
-.modal-content {
+.back-button {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    margin-top: 16px;
+}
+
+.icon-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+.back-text {
+    color: #000;
+    font-size: 22px;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 541px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #8F8F8F;
+    border-radius: 12px;
+    height: 751px;
+}
+
+.form-content {
+    height: 731px;
+    padding: 24px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.input-container {
+    position: relative;
+    margin: 32px 0;
+    padding: 16px;
+    border: 1px solid #2879FD;
+    border-radius: 12px;
+}
+
+.input-label {
+    position: absolute;
+    top: -18px;
+    left: 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    background-color: #ECF3FF;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.input-field {
+    width: 100%;
+    /* padding: 16px; */
+    border-radius: 12px;
+    outline: none;
+    border: none;
+}
+
+.textarea-container {
+    position: relative;
+    margin: 32px 0;
+    padding: 16px;
+    border: 1px solid #2879FD;
+    border-radius: 12px;
+    height: 100px;
+}
+
+.textarea-field {
+    width: 100%;
+    height: 100%;
+    /* padding: 16px; */
+    border-radius: 12px;
+    outline: none;
+    resize: none;
+}
+
+.loan-duration,
+.loan-interest {
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 16px;
 }
 
-.custom-heading {
-    text-align: center;
-    font-size: 45px;
+.duration-select,
+.interest-select {
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #2879FD;
+    width: 50%;
+}
+
+.select-field {
+    outline: none;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+.monthly-amount,
+.total-amount {
+    width: 50%;
+    padding: 8px;
+    font-size: 14px;
     color: #2879FD;
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
+    font-weight: 400;
 }
 
-.payment-options {
-    width: 417px;
-    background-color: #ECF5FF;
+.moratorium-select {
     display: flex;
-    flex-direction: column;
-    padding: 2rem;
-    border-radius: 12px;
-    height: 307px;
+    align-items: center;
+    padding: 16px;
+    width: 50%;
 }
 
-.options-list {
+.button-container {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.option {
-    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.custom-radio {
-    appearance: none;
-    border-radius: 50%;
-    border: 2px solid #8F8F8F;
-    width: 23px;
-    height: 23px;
-    position: relative;
-    outline: none;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-    background-color: #fff;
-}
-
-.custom-radio:checked {
-    border-color: #0961E3;
-    background-color: #0961E3;
-}
-
-.custom-radio:checked::after {
-    content: '';
-    display: block;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
-    border: 2px solid #0961E3;
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.pay-now-button {
-    margin-top: 1rem;
+.submit-button {
     width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.pay-now-button button {
-    width: 166px;
-    background-color: #0961E3;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 51px;
-    color: white;
-    border-radius: 4px;
-}
-
-/* Transfer Info */
-.transfer-info {
-    width: 570px;
-    background-color: #ECF5FF;
+    height: 50px;
+    background-color: #2879FD;
+    margin: 16px 0;
     border-radius: 12px;
-    padding: 0.625rem;
-}
-
-.transfer-info h2 {
-    text-align: center;
-    font-size: 2.8125rem;
-    color: #2879FD;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.transfer-info p {
-    text-align: center;
-    font-size: 1.25rem;
-    color: #000;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.amount-info {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.amount-box {
-    width: 209px;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.amount-box h2 {
-    font-size: 30px;
-    color: #0961E3;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.bank-info {
-    margin-top: 0.5rem;
-}
-
-.bank-info ul {
-    list-style: none;
-    padding: 0;
-}
-
-.bank-info li {
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    border-bottom: 2px solid #0961E3;
-    /* padding: 1rem; */
-}
-
-.copy-button {
-    padding: 0.5rem;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-}
-
-.copy-icon {
-    width: 24px;
-    height: 24px;
-}
-
-/* Reference Info */
-.reference-info {
-    margin-top: 0.5rem;
-    background-color: white;
-    width: 289px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* .reference-info h2 {
-    display: flex;
-    justify-content: space-between;
-} */
-
-.reference-info .copy-button {
-    margin-left: 1rem;
-}
-
-/* Confirm Transfer */
-.confirm-transfer {
-    margin-top: 1rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.confirm-transfer button {
-    width: 315px;
-    background-color: #0961E3;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 51px;
     color: white;
-    border-radius: 4px;
-}
-
-/* Payment Status */
-.payment-status {
-    margin-top: 1rem;
-    text-align: center;
-}
-
-.payment-status p {
-    margin-top: 1rem;
-    font-size: 1.125rem;
-    color: #2879FD;
     font-weight: bold;
-}
-
-.payment-status span {
-    color: #174591;
-}
-
-.return-to-dashboard {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-}
-
-.return-to-dashboard button {
-    text-decoration: underline;
-    font-size: 0.8125rem;
-    color: #000;
-    text-transform: uppercase;
-}
-
-.toggle-sidebar {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .toggle-sidebar {
-        display: block;
-    }
-
-    .modal-content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .payment-options {
-        width: 100%;
-        background-color: #ECF5FF;
-        display: flex;
-        flex-direction: column;
-        padding: 2rem;
-        border-radius: 12px;
-        height: auto;
-    }
-
-    .transfer-info {
-        width: 100%;
-        background-color: #ECF5FF;
-        border-radius: 12px;
-        padding: 0.625rem;
-    }
-
-
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        display: block;
-    }
-
-    .main-content {
-        margin-left: 0;
-    }
-}
-
-/* Fade In/Out Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease-in;
-}
-
-.fade-out {
-    animation: fadeOut 0.5s ease-out;
 }
 </style>
