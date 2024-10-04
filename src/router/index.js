@@ -6,6 +6,7 @@ import Loan from "../Views/LoanView.vue";
 import Profile from "../Views/ProfileView.vue";
 import AppLayout from "../components/ui/layout/AppLayout.vue";
 import AdminHome from "@/Views/AdminHome.vue";
+import LoginView from "@/Views/LoginView.vue";
 
 Vue.use(Router);
 
@@ -38,8 +39,13 @@ export default new Router({
         },
         {
           path: "admin",
-          name: "Profile",
+          name: "AdminHome",
           component: AdminHome,
+        },
+        {
+          path: "admin/login",
+          name: "Login",
+          component: LoginView,
         },
       ],
     },
